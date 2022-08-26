@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
-#
-#
+# Write a Bash script that sets up your web servers for the deployment of web_static.
 
-# install nginx 
-sudo apt-get isntall update
+# Install Nginx
+sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y install nginx
-#create folders if dont exists
-sudo mkdir -p /data/web_static/releases/
-sudp mkdir -p /data/web_static/shared/
+# Create folders if it does not exists
+sudo mkdir -p /data/web_static/releases/test
+sudo mkdir -p /data/web_static/shared
 
-SRC="/etc/nginx/sites-available/default"
-STATIC="\\\tlocation /hbnb_static/ {\n\t\talias /data/web_static_current/;\n\t}\n"
-
-# creat a HTML for try or test nginx
+# Create a fake HTML file to test Nginx - create index.html file
 echo "
 <html>
   <head>
@@ -23,15 +19,13 @@ echo "
   </body>
 </html>" > /data/web_static/releases/test/index.html
 
-# create a symbolic link, if exists it should be deleted and recreated a new
-sudo ln -sf "/data/web_static/releases/test/" "/data/web_static/current"
+# Create a symbolic link - If the symbolic link already exists, it should be deleted and recreated every time the script is ran.
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
+# Change ownership of user and group of /data/ folder to user: ubuntu - recursively
+sudo chown -hR ubuntu:ubuntu /data/
 
-#change ownership of user and group  of folder /data/ recusively
-sudo chown -R ubuntu:ubuntu "/data"
+# Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static (ex: https://mydomainname.tech/hbnb_static)
+sed -i "56i location /hbnb_static/ {\nalias /data/web_static/current/;\n}\n" /etc/nginx/sites-enabled/default
 
-# update nginx configuration the server with the content of /data/web_static/current/ to hbnb_static (ex: https://mydomainname.tech/hbnb_static)
-sudo sed -i "35i $STATIC" $SRC
-
+# Restar Nginx to make changes
 sudo service nginx restart
-service nginx reload
-
