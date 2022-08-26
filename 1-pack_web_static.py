@@ -12,8 +12,8 @@ def do_pack():
     """
     time = strftime("%Y%M%d%H%M%S")
     try:
-        local("mkdir -p version/")
-        rchive_name = "versions/web_static_{}.tgz".format(time)
+        local("mkdir -p version")
+        Archive_name = "versions/web_static_{}.tgz".format(time)
         local("tar -cvzf {} web_static/".format(archive_name))
         return archive_name
     except Exception:
