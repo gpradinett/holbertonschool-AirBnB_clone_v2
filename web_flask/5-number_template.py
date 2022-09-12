@@ -55,6 +55,15 @@ def python_text(text):
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
+def number(n):
+    """
+    Function, that display “n is a number” only if n is an integer
+    Info: https://uniwebsidad.com/libros/explore-flask/chapter-6/url-converters
+    """
+    return "{} is a number".format(n)
+
+
+@app.route("/number/<int:n>", strict_slashes=False)
 def number_text(n):
     """
     function that returns a n and text
@@ -67,7 +76,7 @@ def number_template(n):
     """
     function that returns a number template
     """
-    return render_template("5-number.html", number=n)
+    return render_template("5-number.html", n=n)
 
 
 if __name__ == '__main__':
