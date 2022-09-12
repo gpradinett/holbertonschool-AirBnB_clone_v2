@@ -15,52 +15,44 @@ variable (replace underscore _ symbols with a space )
 * h1 tag: “Number: n” inside the tag body
 - You must use the option strict_slashes=False in your route definition
 """
+from flask import Flask, render_template
 
-from flask import Flask
-
-# Creando una instancia de flask con el nombre del archivo nuestro
 app = Flask(__name__)
 
 
 @app.route("/", strict_slashes=False)
 def hello_HBNB():
-    """Function hello, that return a prompt saying: Hello HBNB!"""
+    """
+    function that returns a Hello HBNB!
+    """
     return "Hello HBNB!"
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """display “HBNB”"""
+@app.route("/hbnb", strict_slashes=False)
+def HBNB():
+    """
+    function that returns a HBNB
+    """
     return "HBNB"
 
 
 @app.route("/c/<text>", strict_slashes=False)
 def c_text(text):
-    """Function, that return a prompt saying: C and text passed"""
-    replace = text.replace("_", " ")
-    return "C {}".format(replace)
+    """
+    function that returns a c and text
+    """
+    result = text.replace("_", " ")
+    return "C {}".format(result)
 
 
-@app.route("/python", defaults={'text': "is cool"}, strict_slashes=False)
+@app.route("/python", strict_slashes=False)
 @app.route("/python/<text>", strict_slashes=False)
-def python_text(text):
+def python_text(text="is cool"):
     """
-    Function, that return a prompt tha display a message
-    Info default varaibles:
-    https://stackoverflow.com/questions/14032066/can-flask-have-optional-url
-    -parameters
+    function that returns a python and text
     """
-    replace = text.replace("_", " ")
-    return "Python {}".format(replace)
-
-
-@app.route("/number/<int:n>", strict_slashes=False)
-def number(n):
-    """
-    Function, that display “n is a number” only if n is an integer
-    Info: https://uniwebsidad.com/libros/explore-flask/chapter-6/url-converters
-    """
-    return "{} is a number".format(n)
+    result = text.replace("_", " ")
+    return "Python {}".format(result)
 
 
 @app.route("/number/<int:n>", strict_slashes=False)
@@ -76,14 +68,8 @@ def number_template(n):
     """
     function that returns a number template
     """
-    if type(n) == int:
-        return render_template("5-number.html", data=n)
+    return render_template("5-number.html", n=n)
 
 
-if __name__ == '__main__':
-    """
-    Set host IP addres and port
-    Info: https://www.codegrepper.com/code-examples/python/flask+set+listen+
-    address+port
-    """
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
